@@ -43,7 +43,41 @@ const Player = () => {
   return { width, height, position, velocity, draw, move };
 };
 
-const projectile = (position, velocity) => {
+const Invader = () => {
+  const scale = 1;
+  const image = new Image();
+  image.src = "./assets/invader.png";
+
+  const sprite = image;
+  const width = sprite * scale;
+  const height = sprite * scale;
+
+  let position = {
+    x: canvas.width / 2 - width / 2,
+    y: canvas.height / 2,
+  };
+
+  let velocity = {
+    x: 0,
+    y: 0,
+  };
+
+  const draw = () => {
+    ctx.drawImage(sprite, position.x, position.y, width, height);
+  };
+
+  const move = () => {
+    if (sprite) {
+      draw();
+      position.x += velocity.x;
+      position.y += velocity.y;
+    }
+  };
+
+  return { width, height, position, velocity, draw, move };
+};
+
+const Projectile = (position, velocity) => {
   const radius = 3;
 
   const draw = () => {
@@ -65,6 +99,7 @@ const projectile = (position, velocity) => {
 
 const player = Player();
 const projectiles = [];
+const invader = new Invader();
 
 const keys = {
   left: {
@@ -79,6 +114,7 @@ const animate = () => {
   requestAnimationFrame(animate);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  invader.move();
   player.draw();
   player.move();
 
@@ -114,7 +150,7 @@ addEventListener("keydown", ({ key }) => {
   }
   if (key == " ") {
     projectiles.push(
-      projectile(
+      Projectile(
         { x: player.position.x + 33, y: player.position.y },
         { x: 0, y: -5 }
       )

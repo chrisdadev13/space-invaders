@@ -53,8 +53,8 @@ const Invader = () => {
   const height = sprite * scale;
 
   let position = {
-    x: canvas.width / 2 - width / 2,
-    y: canvas.height / 2,
+    x: canvas.width / 2 - 20,
+    y: canvas.height / 2 - 180,
   };
 
   let velocity = {
@@ -63,7 +63,15 @@ const Invader = () => {
   };
 
   const draw = () => {
-    ctx.drawImage(sprite, position.x, position.y, width, height);
+    ctx.save();
+    if (sprite)
+      ctx.drawImage(
+        sprite,
+        position.x,
+        position.y,
+        sprite.width * 0.95,
+        sprite.height * 0.95
+      );
   };
 
   const move = () => {
@@ -99,7 +107,7 @@ const Projectile = (position, velocity) => {
 
 const player = Player();
 const projectiles = [];
-const invader = new Invader();
+const invader = Invader();
 
 const keys = {
   left: {
@@ -142,11 +150,9 @@ animate();
 addEventListener("keydown", ({ key }) => {
   if (key == "ArrowLeft") {
     keys.left.pressed = true;
-    console.log(player.position.x);
   }
   if (key == "ArrowRight") {
     keys.right.pressed = true;
-    console.log(player.position.x);
   }
   if (key == " ") {
     projectiles.push(
@@ -155,7 +161,6 @@ addEventListener("keydown", ({ key }) => {
         { x: 0, y: -5 }
       )
     );
-    console.log(projectiles);
   }
 });
 
